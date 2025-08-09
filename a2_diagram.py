@@ -3,6 +3,28 @@ import pandas as pd
 import seaborn as sns
 
 
+def plot_histogram(
+    df, column_name, bins=30, title=None, xlabel=None, ylabel="Frequency"
+):
+    plt.figure(figsize=(10, 6))
+
+    plt.hist(df[column_name], bins=bins, alpha=0.7, color="skyblue", edgecolor="black")
+
+    if title is None:
+        title = f"Histogram of {column_name}"
+    plt.title(title)
+
+    if xlabel is None:
+        xlabel = column_name
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+
+    plt.grid(True, alpha=0.3)
+
+    plt.tight_layout()
+    plt.show()
+
+
 def plot_pie_chart(df, column_name, title, threshold=3.0):
     # Count the number of unique values in the column
     value_counts = df[column_name].value_counts()
@@ -82,20 +104,5 @@ def scatter_plot(df, x_col, y_col, order=None):
     plt.show()
 
 
-def correlation_matrix(df):
-    plt.figure(figsize=(10, 8))
-    sns.heatmap(
-        df.corr(numeric_only=True),
-        annot=True,
-        cmap="coolwarm",
-        center=0,
-        square=True,
-        fmt=".2f",
-    )
-    plt.title("Correlation Matrix of Numerical Variables")
-    plt.tight_layout()
-    plt.show()
-
-
 data = pd.read_csv("datasets/FOAI-assignment2-1.csv")
-correlation_matrix(data)
+plot_histogram(data, "salary_in_usd", 10, "Salary Ranges for Data Scientists in USD")
