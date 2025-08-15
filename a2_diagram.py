@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 
+data = pd.read_csv("datasets/FOAI-assignment2-1.csv")
+
 
 def plot_histogram(
     df, column_name, bins=30, title=None, xlabel=None, ylabel="Frequency"
@@ -25,12 +27,12 @@ def plot_histogram(
     plt.show()
 
 
+plot_histogram(data, "salary_in_usd", 10, "Salary Ranges for Data Scientists in USD")
+
+
 def plot_pie_chart(df, column_name, title, threshold=3.0):
     # Count the number of unique values in the column
     value_counts = df[column_name].value_counts()
-    print("Original value counts:")
-    print(value_counts)
-
     # Calculate percentages
     total = value_counts.sum()
     percentages = (value_counts / total) * 100
@@ -47,12 +49,6 @@ def plot_pie_chart(df, column_name, title, threshold=3.0):
     else:
         final_counts = above_threshold
 
-    print(f"\nAfter grouping (threshold: {threshold}%):")
-    print(final_counts)
-    print(f"\nFinal percentages:")
-    for label, count in final_counts.items():
-        print(f"{label}: {(count/total)*100:.1f}%")
-
     # Create the pie chart
     plt.figure(figsize=(10, 8))
 
@@ -67,6 +63,9 @@ def plot_pie_chart(df, column_name, title, threshold=3.0):
     plt.show()
 
 
+plot_pie_chart(data, "job_title", "Job Title Proportions for Data Scientists", 3.0)
+
+
 def plot_avg_salary_by_year(df):
     avg_salary_by_year = df.groupby("work_year")["salary_in_usd"].mean()
     plt.figure(figsize=(10, 8))
@@ -76,6 +75,9 @@ def plot_avg_salary_by_year(df):
     plt.xlabel("Work Year")
     plt.ylabel("Average Salary (USD)")
     plt.show()
+
+
+plot_avg_salary_by_year(data)
 
 
 def box_plot(df, x_col, y_col, order=None):
@@ -91,6 +93,10 @@ def box_plot(df, x_col, y_col, order=None):
     plt.show()
 
 
+box_plot(data, "experience_level", "salary_in_usd", order=["EN", "MI", "SE", "EX"])
+box_plot(data, "employment_type", "salary_in_usd", order=["FT", "PT", "CT", "FL"])
+
+
 def scatter_plot(df, x_col, y_col, order=None):
     plt.figure(figsize=(10, 8))
     df_plot = df.copy()
@@ -104,5 +110,5 @@ def scatter_plot(df, x_col, y_col, order=None):
     plt.show()
 
 
-data = pd.read_csv("datasets/FOAI-assignment2-1.csv")
-plot_histogram(data, "salary_in_usd", 10, "Salary Ranges for Data Scientists in USD")
+scatter_plot(data, "experience_level", "salary_in_usd", order=["EN", "MI", "SE", "EX"])
+scatter_plot(data, "employment_type", "salary_in_usd", order=["FT", "PT", "CT", "FL"])
